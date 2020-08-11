@@ -72,7 +72,7 @@ okay, here, you want to do something like:
 then you need to make script something like:
 
 ```
-#!/usr/bin/env
+#!/usr/bin/env bash
 
 appname=my-app
 envname=my-env
