@@ -4,7 +4,9 @@ action=$1
 
 help() {
     echo ""
-    echo "./scripts/desc-envs [app name] [env name]"
+    echo "bean list                         ... list available environments"
+    echo "bean show   [app name] [env name] ... show environment variables"
+    echo "bean update [app name] [env name] ... update environemnt variables"
     echo ""
     exit
 }
@@ -19,10 +21,15 @@ application_name=$1
 environment_name=$2
 
 if [[ -z $application_name || -z $environment_name ]]; then
-    help
+    if [[ $action != "list" && $action != "l" ]]; then
+        help
+    fi
 fi
 
 case "$action" in 
+    list|l)
+        aws elasticbeanstalk describe-environments | jq '.Environments' 
+        ;;
     show|s)
         echo "-------------------------------------------------------------------------------------------------"
         aws elasticbeanstalk describe-configuration-settings  --application-name $application_name  --environment-name $environment_name  | jq '.ConfigurationSettings | .[0]  | .OptionSettings[] | select(.OptionName == "EnvironmentVariables") | .Value ' | sed -e 's/^"//' -e 's/"$//' | tr ',' '\n' | while read word; do
@@ -31,7 +38,9 @@ case "$action" in
         echo "-------------------------------------------------------------------------------------------------"
         ;;
     update|u)        
+        shift
+        shift
         eb use $environment_name
-        eb setenv key3=ExampleValue
+        eb setenv $*
         ;;
 esac
