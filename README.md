@@ -7,7 +7,7 @@ Elastic Beanstalk deployment partial automation helper. Utilizing **eb** and *aw
 In browser-basic operation on environment variables in elastic beanstalk, deployer have to be careful about each process, which key-value pairs they change, can cause human error or be costly to safely update these. Especially, if that deployment procedure is going to be repeated task, when the procedure gonna be shorter, it might be happy for members.
 Since aws provides command-line tools to support these deployment procedure, it implies if this is going to be wrapped appropriately in bash script, it can be automated (or at least semi-automated) so no need to flip-flop between browsers and the other tabs/apps, and once a script is proved to be successful, the all you need to do it to reuse this script.
 
-## requisite
+## pre-requisites
 
 `eb` and `aws cli`
 
@@ -53,8 +53,28 @@ Then you can deploy environment variables automatically.
 
 ## example
 
+okay, here, you want to do something like:
 
+- 1. set elb env variables `maintenance` to yes (to show maintenance pages)
+- 2. in Heroku or something, deploy your app after pipe passed
+- 3. set elb env variables `new-key1=new-value`, `key2=some-new-value`
+- 4. set elb env variables `maintenance` to no (to stop showing maintenance pages)
 
+then you need to make script something like:
 
+```
+#!/usr/bin/env
 
+appname=my-app
+envname=my-env
 
+set -e
+bean update maintenance=yes
+heroku-cli deploy-the-latest-master-branch ## this is just an exmaple
+bean update new-key1=new-value key2=some-new-value
+bean update maintenance=no
+```
+
+DONE!!!! it looks much faster than opening aws console or you can easily test this script on staging server then after confirmed that it works fine, change the appname, envname or alpha....
+
+so much more automated, IMAO.
