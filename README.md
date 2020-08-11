@@ -69,10 +69,10 @@ appname=my-app
 envname=my-env
 
 set -e
-bean update maintenance=yes
+bean update $appname $envname maintenance=yes
 heroku-cli deploy-the-latest-master-branch ## this is just an exmaple
-bean update new-key1=new-value key2=some-new-value
-bean update maintenance=no
+bean update $appname $envname new-key1=new-value key2=some-new-value
+bean update $appname $envname maintenance=no
 ```
 
 DONE!!!! it looks much faster than opening aws console or you can easily test this script on staging server then after confirmed that it works fine, change the appname, envname or alpha....
