@@ -22,6 +22,15 @@ For aws-cli, look at: [https://docs.aws.amazon.com/cli/latest/userguide/cli-chap
 
 ## usage
 
+firstly, open the ./scripts/bean and edit L1:
+
+```
+aws configure set default.region us-west-2
+```
+
+by default it sets its default region as us-wes-t2 so you need to fix it to fit the specific region you wanna deploy. (TODO: let user set this region externally)
+
+
 after locating the `bean` script into /usr/local/bin with:
 
 ```
